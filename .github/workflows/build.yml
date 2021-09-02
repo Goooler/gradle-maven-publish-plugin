@@ -58,7 +58,7 @@ jobs:
   publish-release:
 
     runs-on: ubuntu-latest
-    if: github.repository == 'vanniktech/gradle-maven-publish-plugin' && contains(github.ref, 'refs/tags')
+    if: contains(github.ref, 'refs/tags')
     needs:
       - build
 
