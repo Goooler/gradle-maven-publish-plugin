@@ -55,11 +55,9 @@ private fun Project.setCoordinates() {
         publication.artifactId = updatedArtifactId
 
         // in Kotlin MPP projects some publications change our manually set artifactId again
-        afterEvaluate {
-          gradlePublishing.publications.withType(MavenPublication::class.java).named(publication.name).configure { publication ->
-            if (publication.artifactId != updatedArtifactId) {
-              publication.artifactId = publication.artifactId.replace(projectName, artifactId)
-            }
+        gradlePublishing.publications.named(publication.name, MavenPublication::class.java).configure { publication ->
+          if (publication.artifactId != updatedArtifactId) {
+            publication.artifactId = publication.artifactId.replace(projectName, artifactId)
           }
         }
       }

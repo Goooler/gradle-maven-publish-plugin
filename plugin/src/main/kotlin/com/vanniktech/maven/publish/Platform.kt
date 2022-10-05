@@ -41,7 +41,7 @@ sealed class Platform {
  *   withSourcesJar()
  *   withJavadocJar()
  * }
- ```
+```
  */
 data class JavaLibrary @JvmOverloads constructor(
   override val javadocJar: JavadocJar,
@@ -133,12 +133,13 @@ data class AndroidSingleVariantLibrary @JvmOverloads constructor(
       }
     }
 
-    project.afterEvaluate {
-      val component = project.components.findByName(variant) ?: throw MissingVariantException(variant)
-      project.gradlePublishing.publications.create(PUBLICATION_NAME, MavenPublication::class.java) {
-        it.from(component)
-      }
-    }
+    project.components.matching { it.name == variant }
+      .takeIf(Collection<*>::isNotEmpty)
+      ?.configureEach { component ->
+        project.gradlePublishing.publications.create(PUBLICATION_NAME, MavenPublication::class.java) {
+          it.from(component)
+        }
+      } ?: throw MissingVariantException(variant)
   }
 }
 
