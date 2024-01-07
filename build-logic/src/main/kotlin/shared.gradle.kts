@@ -12,11 +12,6 @@ plugins {
   id("org.jlleitschuh.gradle.ktlint")
 }
 
-repositories {
-  mavenCentral()
-  google()
-}
-
 java {
   sourceCompatibility = JavaVersion.VERSION_11
   targetCompatibility = JavaVersion.VERSION_11

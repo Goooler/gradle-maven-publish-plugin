@@ -12,6 +12,13 @@ plugins {
   id("com.gradle.enterprise") version "3.16.1"
 }
 
+dependencyResolutionManagement {
+  repositories {
+    mavenCentral()
+    google()
+  }
+}
+
 gradleEnterprise {
   buildScan {
     termsOfServiceUrl = "https://gradle.com/terms-of-service"
