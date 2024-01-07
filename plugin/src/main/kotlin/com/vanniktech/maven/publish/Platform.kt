@@ -165,7 +165,7 @@ data class AndroidSingleVariantLibrary @JvmOverloads constructor(
       "Calling configure(AndroidSingleVariantLibrary(...)) requires the com.android.library plugin to be applied"
     }
 
-    val library = project.extensions.findByType(LibraryExtension::class.java)!!
+    val library = project.extensions.getByType(LibraryExtension::class.java)
     library.publishing {
       singleVariant(variant) {
         if (sourcesJar) {
@@ -228,7 +228,7 @@ data class AndroidMultiVariantLibrary @JvmOverloads constructor(
       "Calling configure(AndroidMultiVariantLibrary(...)) requires the com.android.library plugin to be applied"
     }
 
-    val library = project.extensions.findByType(LibraryExtension::class.java)!!
+    val library = project.extensions.getByType(LibraryExtension::class.java)
     library.publishing {
       multipleVariants(PUBLICATION_NAME) {
         if (includedBuildTypeValues.isEmpty() && includedFlavorDimensionsAndValues.isEmpty()) {
