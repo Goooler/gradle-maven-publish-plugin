@@ -7,7 +7,7 @@ val libs = the<LibrariesForLibs>()
 plugins {
   id("java-library")
   id("kotlin")
-  id("kotlin-kapt")
+  id("com.google.devtools.ksp")
   id("com.vanniktech.maven.publish")
   id("org.jlleitschuh.gradle.ktlint")
 }
