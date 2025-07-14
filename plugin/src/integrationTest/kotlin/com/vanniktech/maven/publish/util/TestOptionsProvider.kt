@@ -4,7 +4,7 @@ import com.google.testing.junit.testparameterinjector.junit5.TestParameterValues
 
 private val quickTestProperty get() = System.getProperty("quickTest")
 
-internal class TestOptionsConfigProvider : TestParameterValuesProvider() {
+class TestOptionsConfigProvider : TestParameterValuesProvider() {
   override fun provideValues(context: Context?): List<*> {
     val property = System.getProperty("testConfigMethod")
     if (property.isNotBlank()) {
@@ -17,7 +17,7 @@ internal class TestOptionsConfigProvider : TestParameterValuesProvider() {
   }
 }
 
-internal class GradleVersionProvider : TestParameterValuesProvider() {
+class GradleVersionProvider : TestParameterValuesProvider() {
   override fun provideValues(context: Context?): List<*> {
     if (quickTestProperty.isNotBlank()) {
       return listOf(GradleVersion.values().last())
@@ -26,7 +26,7 @@ internal class GradleVersionProvider : TestParameterValuesProvider() {
   }
 }
 
-internal class AgpVersionProvider : TestParameterValuesProvider() {
+class AgpVersionProvider : TestParameterValuesProvider() {
   override fun provideValues(context: Context?): List<*> {
     if (quickTestProperty.isNotBlank()) {
       return listOf(AgpVersion.values().last())
@@ -35,7 +35,7 @@ internal class AgpVersionProvider : TestParameterValuesProvider() {
   }
 }
 
-internal class KotlinVersionProvider : TestParameterValuesProvider() {
+class KotlinVersionProvider : TestParameterValuesProvider() {
   override fun provideValues(context: Context?): List<*> {
     if (quickTestProperty.isNotBlank()) {
       return listOf(KotlinVersion.values().last())
@@ -44,7 +44,7 @@ internal class KotlinVersionProvider : TestParameterValuesProvider() {
   }
 }
 
-internal class GradlePluginPublishVersionProvider : TestParameterValuesProvider() {
+class GradlePluginPublishVersionProvider : TestParameterValuesProvider() {
   override fun provideValues(context: Context?): List<*> {
     if (quickTestProperty.isNotBlank()) {
       return listOf(GradlePluginPublish.values().last())
