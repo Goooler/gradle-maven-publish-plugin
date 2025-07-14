@@ -2,9 +2,22 @@ package com.vanniktech.maven.publish
 
 import com.google.testing.junit.testparameterinjector.junit5.TestParameter
 import com.google.testing.junit.testparameterinjector.junit5.TestParameterInjectorTest
-import com.vanniktech.maven.publish.ProjectResultSubject.Companion.assertThat
-import com.vanniktech.maven.publish.TestOptions.Signing.GPG_KEY
-import com.vanniktech.maven.publish.TestOptions.Signing.NO_SIGNING
+import com.vanniktech.maven.publish.util.ProjectResultSubject.Companion.assertThat
+import com.vanniktech.maven.publish.util.KotlinVersion
+import com.vanniktech.maven.publish.util.KotlinVersionProvider
+import com.vanniktech.maven.publish.util.TestOptions
+import com.vanniktech.maven.publish.util.TestOptions.Signing.GPG_KEY
+import com.vanniktech.maven.publish.util.TestOptions.Signing.NO_SIGNING
+import com.vanniktech.maven.publish.util.assumeSupportedJdkAndGradleVersion
+import com.vanniktech.maven.publish.util.createMinimalPom
+import com.vanniktech.maven.publish.util.fixtures
+import com.vanniktech.maven.publish.util.javaProjectSpec
+import com.vanniktech.maven.publish.util.kotlinDomApi
+import com.vanniktech.maven.publish.util.kotlinMultiplatformProjectSpec
+import com.vanniktech.maven.publish.util.kotlinStdlibCommon
+import com.vanniktech.maven.publish.util.kotlinStdlibJdk
+import com.vanniktech.maven.publish.util.kotlinStdlibJs
+import com.vanniktech.maven.publish.util.run
 
 class SpecialCasePluginTest : BasePluginTest() {
   override val testOptions get() = TestOptions(config, NO_SIGNING, gradleVersion)
@@ -62,7 +75,11 @@ class SpecialCasePluginTest : BasePluginTest() {
     assertThat(nodejsResult).outcome().succeeded()
     assertThat(nodejsResult).artifact("klib").exists()
     assertThat(nodejsResult).pom().exists()
-    assertThat(nodejsResult).pom().matchesExpectedPom("klib", kotlinStdlibJs(kotlinVersion), kotlinDomApi(kotlinVersion))
+    assertThat(nodejsResult).pom().matchesExpectedPom(
+      "klib",
+      kotlinStdlibJs(kotlinVersion),
+      kotlinDomApi(kotlinVersion),
+    )
     assertThat(nodejsResult).module().exists()
     assertThat(nodejsResult).sourcesJar().exists()
     assertThat(nodejsResult).sourcesJar().containsSourceSetFiles("commonMain", "nodeJsMain")
@@ -122,7 +139,11 @@ class SpecialCasePluginTest : BasePluginTest() {
     assertThat(nodejsResult).outcome().succeeded()
     assertThat(nodejsResult).artifact("klib").exists()
     assertThat(nodejsResult).pom().exists()
-    assertThat(nodejsResult).pom().matchesExpectedPom("klib", kotlinStdlibJs(kotlinVersion), kotlinDomApi(kotlinVersion))
+    assertThat(nodejsResult).pom().matchesExpectedPom(
+      "klib",
+      kotlinStdlibJs(kotlinVersion),
+      kotlinDomApi(kotlinVersion),
+    )
     assertThat(nodejsResult).module().exists()
     assertThat(nodejsResult).sourcesJar().exists()
     assertThat(nodejsResult).sourcesJar().containsSourceSetFiles("commonMain", "nodeJsMain")

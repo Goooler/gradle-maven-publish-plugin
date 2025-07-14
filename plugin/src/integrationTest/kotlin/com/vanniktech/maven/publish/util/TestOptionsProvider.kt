@@ -1,4 +1,4 @@
-package com.vanniktech.maven.publish
+package com.vanniktech.maven.publish.util
 
 import com.google.common.collect.ImmutableList
 import com.google.testing.junit.testparameterinjector.junit5.TestParameterValuesProvider

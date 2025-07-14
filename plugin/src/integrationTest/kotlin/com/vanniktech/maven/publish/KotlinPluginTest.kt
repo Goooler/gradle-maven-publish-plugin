@@ -2,7 +2,26 @@ package com.vanniktech.maven.publish
 
 import com.google.testing.junit.testparameterinjector.junit5.TestParameter
 import com.google.testing.junit.testparameterinjector.junit5.TestParameterInjectorTest
-import com.vanniktech.maven.publish.ProjectResultSubject.Companion.assertThat
+import com.vanniktech.maven.publish.util.ProjectResultSubject.Companion.assertThat
+import com.vanniktech.maven.publish.util.AgpVersion
+import com.vanniktech.maven.publish.util.AgpVersionProvider
+import com.vanniktech.maven.publish.util.GradleVersion
+import com.vanniktech.maven.publish.util.KotlinVersion
+import com.vanniktech.maven.publish.util.KotlinVersionProvider
+import com.vanniktech.maven.publish.util.PomDependency
+import com.vanniktech.maven.publish.util.SourceFile
+import com.vanniktech.maven.publish.util.assumeSupportedJdkAndGradleVersion
+import com.vanniktech.maven.publish.util.fixtures
+import com.vanniktech.maven.publish.util.javaTestFixturesPlugin
+import com.vanniktech.maven.publish.util.kotlinDomApi
+import com.vanniktech.maven.publish.util.kotlinJvmProjectSpec
+import com.vanniktech.maven.publish.util.kotlinMultiplatformProjectSpec
+import com.vanniktech.maven.publish.util.kotlinMultiplatformWithAndroidLibraryAndSpecifiedVariantsProjectSpec
+import com.vanniktech.maven.publish.util.kotlinMultiplatformWithAndroidLibraryProjectSpec
+import com.vanniktech.maven.publish.util.kotlinStdlibCommon
+import com.vanniktech.maven.publish.util.kotlinStdlibJdk
+import com.vanniktech.maven.publish.util.kotlinStdlibJs
+import com.vanniktech.maven.publish.util.run
 
 class KotlinPluginTest : BasePluginTest() {
   @TestParameterInjectorTest
@@ -140,7 +159,11 @@ class KotlinPluginTest : BasePluginTest() {
     assertThat(nodejsResult).artifact("klib").isSigned()
     assertThat(nodejsResult).pom().exists()
     assertThat(nodejsResult).pom().isSigned()
-    assertThat(nodejsResult).pom().matchesExpectedPom("klib", kotlinStdlibJs(kotlinVersion), kotlinDomApi(kotlinVersion))
+    assertThat(nodejsResult).pom().matchesExpectedPom(
+      "klib",
+      kotlinStdlibJs(kotlinVersion),
+      kotlinDomApi(kotlinVersion),
+    )
     assertThat(nodejsResult).module().exists()
     assertThat(nodejsResult).module().isSigned()
     assertThat(nodejsResult).sourcesJar().exists()
@@ -219,7 +242,11 @@ class KotlinPluginTest : BasePluginTest() {
     assertThat(nodejsResult).artifact("klib").isSigned()
     assertThat(nodejsResult).pom().exists()
     assertThat(nodejsResult).pom().isSigned()
-    assertThat(nodejsResult).pom().matchesExpectedPom("klib", kotlinStdlibJs(kotlinVersion), kotlinDomApi(kotlinVersion))
+    assertThat(nodejsResult).pom().matchesExpectedPom(
+      "klib",
+      kotlinStdlibJs(kotlinVersion),
+      kotlinDomApi(kotlinVersion),
+    )
     assertThat(nodejsResult).module().exists()
     assertThat(nodejsResult).module().isSigned()
     assertThat(nodejsResult).sourcesJar().exists()
@@ -325,7 +352,11 @@ class KotlinPluginTest : BasePluginTest() {
     assertThat(nodejsResult).artifact("klib").isSigned()
     assertThat(nodejsResult).pom().exists()
     assertThat(nodejsResult).pom().isSigned()
-    assertThat(nodejsResult).pom().matchesExpectedPom("klib", kotlinStdlibJs(kotlinVersion), kotlinDomApi(kotlinVersion))
+    assertThat(nodejsResult).pom().matchesExpectedPom(
+      "klib",
+      kotlinStdlibJs(kotlinVersion),
+      kotlinDomApi(kotlinVersion),
+    )
     assertThat(nodejsResult).module().exists()
     assertThat(nodejsResult).module().isSigned()
     assertThat(nodejsResult).sourcesJar().exists()

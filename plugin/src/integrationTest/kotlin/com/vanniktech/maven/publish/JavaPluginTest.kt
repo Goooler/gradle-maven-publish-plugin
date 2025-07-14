@@ -2,7 +2,26 @@ package com.vanniktech.maven.publish
 
 import com.google.testing.junit.testparameterinjector.junit5.TestParameter
 import com.google.testing.junit.testparameterinjector.junit5.TestParameterInjectorTest
-import com.vanniktech.maven.publish.ProjectResultSubject.Companion.assertThat
+import com.vanniktech.maven.publish.util.ProjectResultSubject.Companion.assertThat
+import com.vanniktech.maven.publish.util.GradlePluginPublish
+import com.vanniktech.maven.publish.util.GradlePluginPublishVersionProvider
+import com.vanniktech.maven.publish.util.GradleVersion
+import com.vanniktech.maven.publish.util.KotlinVersion
+import com.vanniktech.maven.publish.util.KotlinVersionProvider
+import com.vanniktech.maven.publish.util.PomDependency
+import com.vanniktech.maven.publish.util.SourceFile
+import com.vanniktech.maven.publish.util.assumeSupportedJdkAndGradleVersion
+import com.vanniktech.maven.publish.util.fixtures
+import com.vanniktech.maven.publish.util.javaGradlePluginKotlinProjectSpec
+import com.vanniktech.maven.publish.util.javaGradlePluginProjectSpec
+import com.vanniktech.maven.publish.util.javaGradlePluginWithGradlePluginPublish
+import com.vanniktech.maven.publish.util.javaLibraryProjectSpec
+import com.vanniktech.maven.publish.util.javaPlatformProjectSpec
+import com.vanniktech.maven.publish.util.javaProjectSpec
+import com.vanniktech.maven.publish.util.javaTestFixturesPlugin
+import com.vanniktech.maven.publish.util.kotlinStdlibJdk
+import com.vanniktech.maven.publish.util.run
+import com.vanniktech.maven.publish.util.versionCatalogProjectSpec
 
 class JavaPluginTest : BasePluginTest() {
   @TestParameterInjectorTest

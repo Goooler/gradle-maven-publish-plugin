@@ -1,8 +1,17 @@
 package com.vanniktech.maven.publish
 
 import com.google.testing.junit.testparameterinjector.junit5.TestParameterInjectorTest
-import com.vanniktech.maven.publish.ProjectResultSubject.Companion.assertThat
-import com.vanniktech.maven.publish.TestOptions.Signing.NO_SIGNING
+import com.vanniktech.maven.publish.util.ProjectResultSubject.Companion.assertThat
+import com.vanniktech.maven.publish.util.KotlinVersion
+import com.vanniktech.maven.publish.util.TestOptions
+import com.vanniktech.maven.publish.util.TestOptions.Signing.NO_SIGNING
+import com.vanniktech.maven.publish.util.dokka2JavadocPlugin
+import com.vanniktech.maven.publish.util.dokka2Plugin
+import com.vanniktech.maven.publish.util.dokkaPlugin
+import com.vanniktech.maven.publish.util.fixtures
+import com.vanniktech.maven.publish.util.kotlinJvmProjectSpec
+import com.vanniktech.maven.publish.util.kotlinStdlibJdk
+import com.vanniktech.maven.publish.util.run
 
 class DokkaPluginTest : BasePluginTest() {
   override val testOptions get() = TestOptions(config, NO_SIGNING, gradleVersion)

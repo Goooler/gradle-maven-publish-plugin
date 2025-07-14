@@ -3,7 +3,19 @@ package com.vanniktech.maven.publish
 import com.google.common.truth.TruthJUnit.assume
 import com.google.testing.junit.testparameterinjector.junit5.TestParameter
 import com.google.testing.junit.testparameterinjector.junit5.TestParameterInjectorTest
-import com.vanniktech.maven.publish.ProjectResultSubject.Companion.assertThat
+import com.vanniktech.maven.publish.util.ProjectResultSubject.Companion.assertThat
+import com.vanniktech.maven.publish.util.AgpVersion
+import com.vanniktech.maven.publish.util.AgpVersionProvider
+import com.vanniktech.maven.publish.util.KotlinVersion
+import com.vanniktech.maven.publish.util.KotlinVersionProvider
+import com.vanniktech.maven.publish.util.TestOptions
+import com.vanniktech.maven.publish.util.androidFusedLibraryProjectSpec
+import com.vanniktech.maven.publish.util.androidLibraryKotlinProjectSpec
+import com.vanniktech.maven.publish.util.androidLibraryProjectSpec
+import com.vanniktech.maven.publish.util.assumeSupportedJdkAndGradleVersion
+import com.vanniktech.maven.publish.util.fixtures
+import com.vanniktech.maven.publish.util.kotlinStdlibJdk
+import com.vanniktech.maven.publish.util.run
 
 class AndroidPluginTest : BasePluginTest() {
   @TestParameterInjectorTest
