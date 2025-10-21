@@ -1,15 +1,14 @@
 package com.vanniktech.maven.publish
 
 import com.google.common.truth.TruthJUnit.assume
-import com.google.testing.junit.testparameterinjector.junit5.TestParameter
-import com.google.testing.junit.testparameterinjector.junit5.TestParameterInjectorTest
 import com.vanniktech.maven.publish.ProjectResultSubject.Companion.assertThat
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 
 class AndroidPluginTest : BasePluginTest() {
-  @TestParameterInjectorTest
-  fun androidFusedLibraryProject(
-    @TestParameter(valuesProvider = AgpVersionProvider::class) agpVersion: AgpVersion,
-  ) {
+  @ParameterizedTest
+  @MethodSource("agpVersionProvider")
+  fun androidFusedLibraryProject(agpVersion: AgpVersion) {
     agpVersion.assumeSupportedJdkAndGradleVersion(gradleVersion)
     assume().that(agpVersion).isAtLeast(AgpVersion.AGP_8_12)
 
@@ -38,11 +37,9 @@ class AndroidPluginTest : BasePluginTest() {
     // assertThat(result).javadocJar().isSigned()
   }
 
-  @TestParameterInjectorTest
-  fun androidLibraryKotlinProject(
-    @TestParameter(valuesProvider = AgpVersionProvider::class) agpVersion: AgpVersion,
-    @TestParameter(valuesProvider = KotlinVersionProvider::class) kotlinVersion: KotlinVersion,
-  ) {
+  @ParameterizedTest
+  @MethodSource("agpVersionProvider", "kgpVersionProvider")
+  fun androidLibraryKotlinProject(agpVersion: AgpVersion, kotlinVersion: KotlinVersion) {
     agpVersion.assumeSupportedJdkAndGradleVersion(gradleVersion)
     kotlinVersion.assumeSupportedJdkAndGradleVersion(gradleVersion)
 
@@ -68,10 +65,9 @@ class AndroidPluginTest : BasePluginTest() {
     assertThat(result).javadocJar().isSigned()
   }
 
-  @TestParameterInjectorTest
-  fun androidLibraryProject(
-    @TestParameter(valuesProvider = AgpVersionProvider::class) agpVersion: AgpVersion,
-  ) {
+  @ParameterizedTest
+  @MethodSource("agpVersionProvider")
+  fun androidLibraryProject(agpVersion: AgpVersion) {
     agpVersion.assumeSupportedJdkAndGradleVersion(gradleVersion)
 
     val project = androidLibraryProjectSpec(agpVersion)
@@ -96,10 +92,9 @@ class AndroidPluginTest : BasePluginTest() {
     assertThat(result).javadocJar().isSigned()
   }
 
-  @TestParameterInjectorTest
-  fun androidMultiVariantLibraryProject(
-    @TestParameter(valuesProvider = AgpVersionProvider::class) agpVersion: AgpVersion,
-  ) {
+  @ParameterizedTest
+  @MethodSource("agpVersionProvider")
+  fun androidMultiVariantLibraryProject(agpVersion: AgpVersion) {
     // regular plugin does not have a way to enable multi variant config
     assume().that(config).isEqualTo(TestOptions.Config.BASE)
     agpVersion.assumeSupportedJdkAndGradleVersion(gradleVersion)

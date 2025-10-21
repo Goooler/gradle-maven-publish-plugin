@@ -1,13 +1,13 @@
 package com.vanniktech.maven.publish
 
-import com.google.testing.junit.testparameterinjector.junit5.TestParameterInjectorTest
 import com.vanniktech.maven.publish.ProjectResultSubject.Companion.assertThat
 import com.vanniktech.maven.publish.TestOptions.Signing.NO_SIGNING
+import org.junit.jupiter.api.Test
 
 class DokkaPluginTest : BasePluginTest() {
   override val testOptions get() = TestOptions(config, NO_SIGNING, gradleVersion)
 
-  @TestParameterInjectorTest
+  @Test
   fun dokka() {
     val kotlinVersion = KotlinVersion.values().last()
     val original = kotlinJvmProjectSpec(kotlinVersion)
@@ -28,7 +28,7 @@ class DokkaPluginTest : BasePluginTest() {
     assertThat(result).javadocJar().containsFiles(ignoreAdditionalFiles = true, "index.html")
   }
 
-  @TestParameterInjectorTest
+  @Test
   fun dokka2() {
     val kotlinVersion = KotlinVersion.values().last()
     val original = kotlinJvmProjectSpec(kotlinVersion)
@@ -57,7 +57,7 @@ class DokkaPluginTest : BasePluginTest() {
     assertThat(result).javadocJar().containsFiles(ignoreAdditionalFiles = true, "index.html")
   }
 
-  @TestParameterInjectorTest
+  @Test
   fun dokka2Javadoc() {
     val kotlinVersion = KotlinVersion.values().last()
     val original = kotlinJvmProjectSpec(kotlinVersion)

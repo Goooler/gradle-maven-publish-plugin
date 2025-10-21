@@ -1,18 +1,18 @@
 package com.vanniktech.maven.publish
 
-import com.google.testing.junit.testparameterinjector.junit5.TestParameter
-import com.google.testing.junit.testparameterinjector.junit5.TestParameterInjectorTest
 import com.vanniktech.maven.publish.ProjectResultSubject.Companion.assertThat
 import com.vanniktech.maven.publish.TestOptions.Signing.GPG_KEY
 import com.vanniktech.maven.publish.TestOptions.Signing.NO_SIGNING
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 
 class SpecialCasePluginTest : BasePluginTest() {
   override val testOptions get() = TestOptions(config, NO_SIGNING, gradleVersion)
 
-  @TestParameterInjectorTest
-  fun artifactIdThatContainsProjectNameProducesCorrectArtifactId(
-    @TestParameter(valuesProvider = KotlinVersionProvider::class) kotlinVersion: KotlinVersion,
-  ) {
+  @ParameterizedTest
+  @MethodSource("kgpVersionProvider")
+  fun artifactIdThatContainsProjectNameProducesCorrectArtifactId(kotlinVersion: KotlinVersion) {
     kotlinVersion.assumeSupportedJdkAndGradleVersion(gradleVersion)
 
     val project = kotlinMultiplatformProjectSpec(kotlinVersion).copy(
@@ -69,10 +69,9 @@ class SpecialCasePluginTest : BasePluginTest() {
     assertThat(nodejsResult).javadocJar().exists()
   }
 
-  @TestParameterInjectorTest
-  fun artifactIdThatContainsProjectNameProducesCorrectArtifactId2(
-    @TestParameter(valuesProvider = KotlinVersionProvider::class) kotlinVersion: KotlinVersion,
-  ) {
+  @ParameterizedTest
+  @MethodSource("kgpVersionProvider")
+  fun artifactIdThatContainsProjectNameProducesCorrectArtifactId2(kotlinVersion: KotlinVersion) {
     kotlinVersion.assumeSupportedJdkAndGradleVersion(gradleVersion)
 
     val project = kotlinMultiplatformProjectSpec(kotlinVersion).copy(
@@ -129,7 +128,7 @@ class SpecialCasePluginTest : BasePluginTest() {
     assertThat(nodejsResult).javadocJar().exists()
   }
 
-  @TestParameterInjectorTest
+  @Test
   fun minimalPomProject() {
     val project = javaProjectSpec().copy(
       properties = emptyMap(),
@@ -146,7 +145,7 @@ class SpecialCasePluginTest : BasePluginTest() {
     assertThat(result).javadocJar().exists()
   }
 
-  @TestParameterInjectorTest
+  @Test
   fun groupAndVersionFromProjectProject() {
     val project = javaProjectSpec().copy(
       group = null,
@@ -177,7 +176,7 @@ class SpecialCasePluginTest : BasePluginTest() {
     assertThat(actualResult).javadocJar().exists()
   }
 
-  @TestParameterInjectorTest
+  @Test
   fun withoutSigning() {
     val project = javaProjectSpec()
     val result = project.run(fixtures, testProjectDir, testOptions)
@@ -195,7 +194,7 @@ class SpecialCasePluginTest : BasePluginTest() {
     assertThat(result).javadocJar().isNotSigned()
   }
 
-  @TestParameterInjectorTest
+  @Test
   fun signWithGpgKey() {
     val project = javaProjectSpec()
     val result = project.run(fixtures, testProjectDir, testOptions.copy(signing = GPG_KEY))

@@ -1,11 +1,12 @@
 package com.vanniktech.maven.publish
 
-import com.google.testing.junit.testparameterinjector.junit5.TestParameter
-import com.google.testing.junit.testparameterinjector.junit5.TestParameterInjectorTest
 import com.vanniktech.maven.publish.ProjectResultSubject.Companion.assertThat
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 
 class JavaPluginTest : BasePluginTest() {
-  @TestParameterInjectorTest
+  @Test
   fun javaProject() {
     val project = javaProjectSpec()
     val result = project.run(fixtures, testProjectDir, testOptions)
@@ -25,7 +26,7 @@ class JavaPluginTest : BasePluginTest() {
     assertThat(result).javadocJar().isSigned()
   }
 
-  @TestParameterInjectorTest
+  @Test
   fun javaLibraryProject() {
     val project = javaLibraryProjectSpec()
     val result = project.run(fixtures, testProjectDir, testOptions)
@@ -45,7 +46,7 @@ class JavaPluginTest : BasePluginTest() {
     assertThat(result).javadocJar().isSigned()
   }
 
-  @TestParameterInjectorTest
+  @Test
   fun javaLibraryWithTestFixturesProject() {
     val default = javaLibraryProjectSpec()
     val project = default.copy(
@@ -75,7 +76,7 @@ class JavaPluginTest : BasePluginTest() {
     assertThat(result).sourcesJar("test-fixtures").containsSourceSetFiles("testFixtures")
   }
 
-  @TestParameterInjectorTest
+  @Test
   fun javaGradlePluginProject() {
     val project = javaGradlePluginProjectSpec()
     val result = project.run(fixtures, testProjectDir, testOptions)
@@ -105,10 +106,9 @@ class JavaPluginTest : BasePluginTest() {
     )
   }
 
-  @TestParameterInjectorTest
-  fun javaGradlePluginWithPluginPublishProject(
-    @TestParameter(valuesProvider = GradlePluginPublishVersionProvider::class) gradlePluginPublish: GradlePluginPublish,
-  ) {
+  @ParameterizedTest
+  @MethodSource("gppVersionProvider")
+  fun javaGradlePluginWithPluginPublishProject(gradlePluginPublish: GradlePluginPublish) {
     val project = javaGradlePluginWithGradlePluginPublish(gradlePluginPublish)
     val result = project.run(fixtures, testProjectDir, testOptions)
 
@@ -137,10 +137,9 @@ class JavaPluginTest : BasePluginTest() {
     )
   }
 
-  @TestParameterInjectorTest
-  fun javaGradlePluginKotlinProject(
-    @TestParameter(valuesProvider = KotlinVersionProvider::class) kotlinVersion: KotlinVersion,
-  ) {
+  @ParameterizedTest
+  @MethodSource("kgpVersionProvider")
+  fun javaGradlePluginKotlinProject(kotlinVersion: KotlinVersion) {
     kotlinVersion.assumeSupportedJdkAndGradleVersion(gradleVersion)
 
     val project = javaGradlePluginKotlinProjectSpec(kotlinVersion)
@@ -171,7 +170,7 @@ class JavaPluginTest : BasePluginTest() {
     )
   }
 
-  @TestParameterInjectorTest
+  @Test
   fun javaLibraryWithToolchainProject() {
     val project = javaLibraryProjectSpec().copy(
       buildFileExtra =
@@ -200,7 +199,7 @@ class JavaPluginTest : BasePluginTest() {
     assertThat(result).javadocJar().isSigned()
   }
 
-  @TestParameterInjectorTest
+  @Test
   fun javaPlatformProject() {
     val project = javaPlatformProjectSpec()
     val result = project.run(fixtures, testProjectDir, testOptions)
@@ -219,7 +218,7 @@ class JavaPluginTest : BasePluginTest() {
     assertThat(result).module().isSigned()
   }
 
-  @TestParameterInjectorTest
+  @Test
   fun versionCatalogProject() {
     val project = versionCatalogProjectSpec()
     val result = project.run(fixtures, testProjectDir, testOptions)

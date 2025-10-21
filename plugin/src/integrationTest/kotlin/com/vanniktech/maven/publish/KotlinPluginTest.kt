@@ -1,15 +1,14 @@
 package com.vanniktech.maven.publish
 
 import com.google.common.truth.TruthJUnit.assume
-import com.google.testing.junit.testparameterinjector.junit5.TestParameter
-import com.google.testing.junit.testparameterinjector.junit5.TestParameterInjectorTest
 import com.vanniktech.maven.publish.ProjectResultSubject.Companion.assertThat
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 
 class KotlinPluginTest : BasePluginTest() {
-  @TestParameterInjectorTest
-  fun kotlinJvmProject(
-    @TestParameter(valuesProvider = KotlinVersionProvider::class) kotlinVersion: KotlinVersion,
-  ) {
+  @ParameterizedTest
+  @MethodSource("kgpVersionProvider")
+  fun kotlinJvmProject(kotlinVersion: KotlinVersion) {
     kotlinVersion.assumeSupportedJdkAndGradleVersion(gradleVersion)
 
     val project = kotlinJvmProjectSpec(kotlinVersion)
@@ -30,10 +29,9 @@ class KotlinPluginTest : BasePluginTest() {
     assertThat(result).javadocJar().isSigned()
   }
 
-  @TestParameterInjectorTest
-  fun kotlinJvmWithTestFixturesProject(
-    @TestParameter(valuesProvider = KotlinVersionProvider::class) kotlinVersion: KotlinVersion,
-  ) {
+  @ParameterizedTest
+  @MethodSource("kgpVersionProvider")
+  fun kotlinJvmWithTestFixturesProject(kotlinVersion: KotlinVersion) {
     kotlinVersion.assumeSupportedJdkAndGradleVersion(gradleVersion)
 
     val default = kotlinJvmProjectSpec(kotlinVersion)
@@ -66,10 +64,9 @@ class KotlinPluginTest : BasePluginTest() {
     assertThat(result).sourcesJar("test-fixtures").containsSourceSetFiles("testFixtures")
   }
 
-  @TestParameterInjectorTest
-  fun kotlinMultiplatformProject(
-    @TestParameter(valuesProvider = KotlinVersionProvider::class) kotlinVersion: KotlinVersion,
-  ) {
+  @ParameterizedTest
+  @MethodSource("kgpVersionProvider")
+  fun kotlinMultiplatformProject(kotlinVersion: KotlinVersion) {
     kotlinVersion.assumeSupportedJdkAndGradleVersion(gradleVersion)
 
     val project = kotlinMultiplatformProjectSpec(kotlinVersion)
@@ -143,11 +140,9 @@ class KotlinPluginTest : BasePluginTest() {
     assertThat(nodejsResult).javadocJar().isSigned()
   }
 
-  @TestParameterInjectorTest
-  fun kotlinMultiplatformWithAndroidLibraryProject(
-    @TestParameter(valuesProvider = AgpVersionProvider::class) agpVersion: AgpVersion,
-    @TestParameter(valuesProvider = KotlinVersionProvider::class) kotlinVersion: KotlinVersion,
-  ) {
+  @ParameterizedTest
+  @MethodSource("agpVersionProvider", "kgpVersionProvider")
+  fun kotlinMultiplatformWithAndroidLibraryProject(agpVersion: AgpVersion, kotlinVersion: KotlinVersion) {
     agpVersion.assumeSupportedJdkAndGradleVersion(gradleVersion)
     kotlinVersion.assumeSupportedJdkAndGradleVersion(gradleVersion)
 
@@ -249,11 +244,9 @@ class KotlinPluginTest : BasePluginTest() {
     assertThat(androidDebugResult).javadocJar().doesNotExist()
   }
 
-  @TestParameterInjectorTest
-  fun kotlinMultiplatformWithAndroidLibraryAndSpecifiedVariantsProject(
-    @TestParameter(valuesProvider = AgpVersionProvider::class) agpVersion: AgpVersion,
-    @TestParameter(valuesProvider = KotlinVersionProvider::class) kotlinVersion: KotlinVersion,
-  ) {
+  @ParameterizedTest
+  @MethodSource("agpVersionProvider", "kgpVersionProvider")
+  fun kotlinMultiplatformWithAndroidLibraryAndSpecifiedVariantsProject(agpVersion: AgpVersion, kotlinVersion: KotlinVersion) {
     agpVersion.assumeSupportedJdkAndGradleVersion(gradleVersion)
     kotlinVersion.assumeSupportedJdkAndGradleVersion(gradleVersion)
 
@@ -366,11 +359,9 @@ class KotlinPluginTest : BasePluginTest() {
     assertThat(androidDebugResult).javadocJar().isSigned()
   }
 
-  @TestParameterInjectorTest
-  fun kotlinMultiplatformWithModernAndroidLibraryProject(
-    @TestParameter(valuesProvider = AgpVersionProvider::class) agpVersion: AgpVersion,
-    @TestParameter(valuesProvider = KotlinVersionProvider::class) kotlinVersion: KotlinVersion,
-  ) {
+  @ParameterizedTest
+  @MethodSource("agpVersionProvider", "kgpVersionProvider")
+  fun kotlinMultiplatformWithModernAndroidLibraryProject(agpVersion: AgpVersion, kotlinVersion: KotlinVersion) {
     agpVersion.assumeSupportedJdkAndGradleVersion(gradleVersion)
     kotlinVersion.assumeSupportedJdkAndGradleVersion(gradleVersion)
 
