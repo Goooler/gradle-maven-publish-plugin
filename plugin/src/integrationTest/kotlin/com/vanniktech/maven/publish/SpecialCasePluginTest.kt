@@ -4,6 +4,7 @@ import com.google.testing.junit.testparameterinjector.junit5.TestParameter
 import com.google.testing.junit.testparameterinjector.junit5.TestParameterInjectorTest
 import com.vanniktech.maven.publish.util.KgpVersion
 import com.vanniktech.maven.publish.util.KgpVersionProvider
+import com.vanniktech.maven.publish.util.ProjectResultSubject.Companion.assertKotlinArtifactsCommon
 import com.vanniktech.maven.publish.util.ProjectResultSubject.Companion.assertSingleArtifactCommon
 import com.vanniktech.maven.publish.util.ProjectResultSubject.Companion.assertThat
 import com.vanniktech.maven.publish.util.TestOptions
@@ -11,11 +12,8 @@ import com.vanniktech.maven.publish.util.TestOptions.Signing.GPG_KEY
 import com.vanniktech.maven.publish.util.TestOptions.Signing.NO_SIGNING
 import com.vanniktech.maven.publish.util.assumeSupportedJdkAndGradleVersion
 import com.vanniktech.maven.publish.util.createMinimalPom
-import com.vanniktech.maven.publish.util.domApiCompat
 import com.vanniktech.maven.publish.util.javaProjectSpec
 import com.vanniktech.maven.publish.util.kotlinMultiplatformProjectSpec
-import com.vanniktech.maven.publish.util.stdlibCommon
-import com.vanniktech.maven.publish.util.stdlibJs
 
 class SpecialCasePluginTest : BasePluginTest() {
   override val testOptions get() = TestOptions(config, NO_SIGNING, gradleVersion)
@@ -32,24 +30,7 @@ class SpecialCasePluginTest : BasePluginTest() {
     )
     val result = project.run()
 
-    assertSingleArtifactCommon(result, enableSigning = false)
-    assertThat(result).pom().matchesExpectedPom(kgpVersion.stdlibCommon().copy(scope = "runtime"))
-    assertThat(result).sourcesJar().containsSourceSetFiles("commonMain")
-
-    val jvmResult = result.withArtifactIdSuffix("jvm")
-    assertSingleArtifactCommon(jvmResult, enableSigning = false)
-    assertThat(jvmResult).pom().matchesExpectedPom(kgpVersion.stdlibCommon())
-    assertThat(jvmResult).sourcesJar().containsSourceSetFiles("commonMain", "jvmMain")
-
-    val linuxResult = result.withArtifactIdSuffix("linuxx64")
-    assertSingleArtifactCommon(linuxResult, "klib", enableSigning = false)
-    assertThat(linuxResult).pom().matchesExpectedPom("klib", kgpVersion.stdlibCommon())
-    assertThat(linuxResult).sourcesJar().containsSourceSetFiles("commonMain", "linuxX64Main")
-
-    val nodejsResult = result.withArtifactIdSuffix("nodejs")
-    assertSingleArtifactCommon(nodejsResult, "klib", enableSigning = false)
-    assertThat(nodejsResult).pom().matchesExpectedPom("klib", kgpVersion.stdlibJs(), kgpVersion.domApiCompat())
-    assertThat(nodejsResult).sourcesJar().containsSourceSetFiles("commonMain", "nodeJsMain")
+    assertKotlinArtifactsCommon(result, kgpVersion, containsAndroidTarget = false, enableSigning = false)
   }
 
   @TestParameterInjectorTest
@@ -64,24 +45,7 @@ class SpecialCasePluginTest : BasePluginTest() {
     )
     val result = project.run()
 
-    assertSingleArtifactCommon(result, enableSigning = false)
-    assertThat(result).pom().matchesExpectedPom(kgpVersion.stdlibCommon().copy(scope = "runtime"))
-    assertThat(result).sourcesJar().containsSourceSetFiles("commonMain")
-
-    val jvmResult = result.withArtifactIdSuffix("jvm")
-    assertSingleArtifactCommon(jvmResult, enableSigning = false)
-    assertThat(jvmResult).pom().matchesExpectedPom(kgpVersion.stdlibCommon())
-    assertThat(jvmResult).sourcesJar().containsSourceSetFiles("commonMain", "jvmMain")
-
-    val linuxResult = result.withArtifactIdSuffix("linuxx64")
-    assertSingleArtifactCommon(linuxResult, "klib", enableSigning = false)
-    assertThat(linuxResult).pom().matchesExpectedPom("klib", kgpVersion.stdlibCommon())
-    assertThat(linuxResult).sourcesJar().containsSourceSetFiles("commonMain", "linuxX64Main")
-
-    val nodejsResult = result.withArtifactIdSuffix("nodejs")
-    assertSingleArtifactCommon(nodejsResult, "klib", enableSigning = false)
-    assertThat(nodejsResult).pom().matchesExpectedPom("klib", kgpVersion.stdlibJs(), kgpVersion.domApiCompat())
-    assertThat(nodejsResult).sourcesJar().containsSourceSetFiles("commonMain", "nodeJsMain")
+    assertKotlinArtifactsCommon(result, kgpVersion, containsAndroidTarget = false, enableSigning = false)
   }
 
   @TestParameterInjectorTest
