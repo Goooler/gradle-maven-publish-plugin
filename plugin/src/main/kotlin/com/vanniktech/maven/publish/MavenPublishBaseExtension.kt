@@ -3,6 +3,7 @@ package com.vanniktech.maven.publish
 import com.vanniktech.maven.publish.central.DropMavenCentralDeploymentTask.Companion.registerDropMavenCentralDeploymentTask
 import com.vanniktech.maven.publish.central.EnableAutomaticMavenCentralPublishingTask.Companion.registerEnableAutomaticMavenCentralPublishingTask
 import com.vanniktech.maven.publish.central.MavenCentralBuildService.Companion.registerMavenCentralBuildService
+import com.vanniktech.maven.publish.central.PrepareMavenCentralPublishingTask
 import com.vanniktech.maven.publish.central.PrepareMavenCentralPublishingTask.Companion.registerPrepareMavenCentralPublishingTask
 import com.vanniktech.maven.publish.workaround.DirectorySignatureType
 import javax.inject.Inject
@@ -119,12 +120,26 @@ public abstract class MavenPublishBaseExtension @Inject constructor(
       }
     }
 
+    val usernameProvider = project.providers.gradleProperty("mavenCentralUsername")
+    val passwordProvider = project.providers.gradleProperty("mavenCentralPassword")
+
     val buildService = project.registerMavenCentralBuildService(
-      repositoryUsername = project.providers.gradleProperty("mavenCentralUsername"),
-      repositoryPassword = project.providers.gradleProperty("mavenCentralPassword"),
+      repositoryUsername = usernameProvider,
+      repositoryPassword = passwordProvider,
       rootBuildDirectory = @Suppress("UnstableApiUsage") project.layout.settingsDirectory.dir("build"),
       buildEventsListenerRegistry = buildEventsListenerRegistry,
     )
+
+    project.gradle.taskGraph.whenReady { graph ->
+      if (graph.allTasks.any { it is PrepareMavenCentralPublishingTask }) {
+        check(usernameProvider.isPresent) {
+          "mavenCentralUsername not found, which is required for publishing to Maven Central."
+        }
+        check(passwordProvider.isPresent) {
+          "mavenCentralPassword not found, which is required for publishing to Maven Central."
+        }
+      }
+    }
 
     val prepareTask = project.tasks.registerPrepareMavenCentralPublishingTask(buildService, groupId, artifactId, version, localRepository)
     val enableAutomaticTask = project.tasks.registerEnableAutomaticMavenCentralPublishingTask(buildService, validateDeployment)
