@@ -85,6 +85,7 @@ buildConfig {
     buildConfigField("GRADLE_PUBLISH_RC", rc.versions.gradle.plugin.publish)
     buildConfigField("GRADLE_PUBLISH_STABLE", libs.versions.gradle.plugin.publish)
     buildConfigField("DOKKA_STABLE", libs.versions.dokka)
+    buildConfigField("SHADOW_STABLE", libs.versions.shadow)
   }
 }
 
