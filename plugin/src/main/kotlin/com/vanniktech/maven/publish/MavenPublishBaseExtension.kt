@@ -445,6 +445,8 @@ public abstract class MavenPublishBaseExtension @Inject constructor(
         configure(GradlePublishPlugin())
       project.plugins.hasPlugin("java-gradle-plugin") ->
         configure(GradlePlugin(javadocJar, sourcesJar))
+      project.plugins.hasPlugin("com.gradleup.shadow") || project.plugins.hasPlugin("com.github.johnrengelman.shadow") ->
+        configure(JavaLibraryShadow(javadocJar, sourcesJar))
       project.plugins.hasPlugin("org.jetbrains.kotlin.jvm") ->
         configure(KotlinJvm(javadocJar, sourcesJar))
       project.plugins.hasPlugin("java-library") ->
