@@ -2,6 +2,10 @@
 
 ## [UNRELEASED](https://github.com/vanniktech/gradle-maven-publish-plugin/compare/0.36.0...HEAD) *(2026-xx-xx)*
 
+**Features**
+- Add `JavaLibraryShadow` platform for projects using the Shadow Gradle plugin (`com.gradleup.shadow` or
+  `com.github.johnrengelman.shadow`). This publishes the shadow JAR (fat JAR) as the main artifact.
+
 
 #### Minimum supported versions
 - JDK 17

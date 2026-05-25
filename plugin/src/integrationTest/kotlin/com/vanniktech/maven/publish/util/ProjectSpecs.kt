@@ -1,6 +1,7 @@
 package com.vanniktech.maven.publish.util
 
 import com.vanniktech.maven.publish.IntegrationTestBuildConfig.DOKKA_STABLE
+import com.vanniktech.maven.publish.IntegrationTestBuildConfig.SHADOW_STABLE
 import com.vanniktech.maven.publish.util.AgpVersion.Companion.AGP_9_0_0
 
 val javaPlugin = PluginSpec("java")
@@ -18,6 +19,7 @@ val androidFusedLibraryPlugin = PluginSpec("com.android.fused-library")
 val gradlePluginPublishPlugin = PluginSpec("com.gradle.plugin-publish")
 val dokkaPlugin = PluginSpec("org.jetbrains.dokka", DOKKA_STABLE)
 val dokkaJavadocPlugin = PluginSpec("org.jetbrains.dokka-javadoc", DOKKA_STABLE)
+val shadowPlugin = PluginSpec("com.gradleup.shadow", SHADOW_STABLE)
 
 private val defaultProperties = mapOf(
   "POM_NAME" to "Gradle Maven Publish Plugin Test Artifact",
@@ -353,4 +355,19 @@ fun versionCatalogProjectSpec() = ProjectSpec(
         }
     }
     """.trimIndent(),
+)
+
+fun javaLibraryWithShadowProjectSpec() = ProjectSpec(
+  plugins = listOf(
+    javaLibraryPlugin,
+    shadowPlugin,
+  ),
+  group = "com.example",
+  artifactId = "test-artifact",
+  version = "1.0.0",
+  properties = defaultProperties,
+  sourceFiles = listOf(
+    SourceFile("main", "java", "com/vanniktech/maven/publish/test/JavaTestClass.java"),
+  ),
+  basePluginConfig = "configure(new JavaLibraryShadow(new JavadocJar.Empty(), new SourcesJar.Sources()))",
 )

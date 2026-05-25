@@ -10,6 +10,7 @@ It is possible to configure publishing for the following Gradle plugins:
     - automatically includes `com.android.kotlin.multiplatform.library`
 - [`java`](#java-library)
 - [`java-library`](#java-library)
+- [`com.gradleup.shadow` or `com.github.johnrengelman.shadow`](#shadow-library)
 - [`java-gradle-plugin`](#gradle-plugin)
 - [`com.gradle.plugin-publish`](#gradle-publish-plugin)
 - [`java-platform`](#java-platform)
@@ -340,6 +341,59 @@ For projects using the `java-library` plugin.
         // - `JavadocJar.None()` don't publish this artifact
         // - `JavadocJar.Empty()` publish an empty jar
         // - `JavadocJar.Javadoc()` to publish standard javadocs
+        javadocJar = JavadocJar.Empty(),
+        // configures the -sources artifact, possible values:
+        // - `SourcesJar.None()` don't publish this artifact
+        // - `SourcesJar.Empty()` publish an empty jar
+        // - `SourcesJar.Sources()` publish the sources
+        sourcesJar = SourcesJar.Sources(),
+      ))
+    }
+    ```
+
+## Shadow Library
+
+For projects using the Shadow Gradle plugin (`com.gradleup.shadow` or `com.github.johnrengelman.shadow`). This
+creates a publication for the shadow JAR (a fat JAR with all dependencies bundled in it).
+
+=== "build.gradle"
+
+    ```groovy
+    import com.vanniktech.maven.publish.JavaLibraryShadow
+    import com.vanniktech.maven.publish.JavadocJar
+    import com.vanniktech.maven.publish.SourcesJar
+
+    mavenPublishing {
+      configure(new JavaLibraryShadow(
+        // configures the -javadoc artifact, possible values:
+        // - `JavadocJar.None()` don't publish this artifact
+        // - `JavadocJar.Empty()` publish an empty jar
+        // - `JavadocJar.Javadoc()` to publish standard javadocs
+        // - `JavadocJar.Dokka("dokkaHtml")` when using Kotlin with Dokka, where `dokkaHtml` is the name of the Dokka task that should be used as input
+        new JavadocJar.Empty(),
+        // configures the -sources artifact, possible values:
+        // - `SourcesJar.None()` don't publish this artifact
+        // - `SourcesJar.Empty()` publish an empty jar
+        // - `SourcesJar.Sources()` publish the sources
+        new SourcesJar.Sources()
+      ))
+    }
+    ```
+
+=== "build.gradle.kts"
+
+    ```kotlin
+    import com.vanniktech.maven.publish.JavaLibraryShadow
+    import com.vanniktech.maven.publish.JavadocJar
+    import com.vanniktech.maven.publish.SourcesJar
+
+    mavenPublishing {
+      configure(JavaLibraryShadow(
+        // configures the -javadoc artifact, possible values:
+        // - `JavadocJar.None()` don't publish this artifact
+        // - `JavadocJar.Empty()` publish an empty jar
+        // - `JavadocJar.Javadoc()` to publish standard javadocs
+        // - `JavadocJar.Dokka("dokkaHtml")` when using Kotlin with Dokka, where `dokkaHtml` is the name of the Dokka task that should be used as input
         javadocJar = JavadocJar.Empty(),
         // configures the -sources artifact, possible values:
         // - `SourcesJar.None()` don't publish this artifact

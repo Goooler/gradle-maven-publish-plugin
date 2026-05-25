@@ -450,6 +450,43 @@ public data class KotlinJvm @JvmOverloads constructor(
 }
 
 /**
+ * To be used for projects that use the Shadow Gradle plugin (`com.gradleup.shadow` or
+ * `com.github.johnrengelman.shadow`). Applying this creates a publication for the component called `shadow`, which
+ * contains the shadow JAR (a fat JAR with all dependencies bundled).
+ *
+ * Equivalent Gradle set up:
+ * ```
+ * publishing {
+ *   publications {
+ *     create<MavenPublication>("maven") {
+ *       from(components["shadow"])
+ *     }
+ *   }
+ * }
+ * ```
+ */
+public data class JavaLibraryShadow @JvmOverloads constructor(
+  override val javadocJar: JavadocJar = JavadocJar.Empty(),
+  override val sourcesJar: SourcesJar = SourcesJar.Sources(),
+) : Platform() {
+  override fun configure(project: Project) {
+    check(
+      project.plugins.hasPlugin("com.gradleup.shadow") ||
+        project.plugins.hasPlugin("com.github.johnrengelman.shadow"),
+    ) {
+      "Calling configure(JavaLibraryShadow(...)) requires the shadow plugin " +
+        "(com.gradleup.shadow or com.github.johnrengelman.shadow) to be applied"
+    }
+
+    project.gradlePublishing.publications.create(PUBLICATION_NAME, MavenPublication::class.java) {
+      it.from(project.components.getByName("shadow"))
+      it.withJavaSourcesJar(sourcesJar, project, multipleTasks = false)
+      it.withJavadocJar(javadocJar, project, multipleTasks = false)
+    }
+  }
+}
+
+/**
  * To be used for `java-platforms` projects. Applying this creates a publication for the component called
  * `javaPlatform`.
  *

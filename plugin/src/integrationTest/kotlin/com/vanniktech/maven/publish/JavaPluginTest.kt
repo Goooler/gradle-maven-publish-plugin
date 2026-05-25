@@ -14,6 +14,7 @@ import com.vanniktech.maven.publish.util.javaGradlePluginKotlinProjectSpec
 import com.vanniktech.maven.publish.util.javaGradlePluginProjectSpec
 import com.vanniktech.maven.publish.util.javaGradlePluginWithGradlePluginPublish
 import com.vanniktech.maven.publish.util.javaLibraryProjectSpec
+import com.vanniktech.maven.publish.util.javaLibraryWithShadowProjectSpec
 import com.vanniktech.maven.publish.util.javaPlatformProjectSpec
 import com.vanniktech.maven.publish.util.javaProjectSpec
 import com.vanniktech.maven.publish.util.javaTestFixturesPlugin
@@ -246,5 +247,25 @@ class JavaPluginTest : BasePluginTest() {
     assertThat(result).pom().matchesExpectedPom("toml")
     assertThat(result).module().exists()
     assertThat(result).module().isSigned()
+  }
+
+  @TestParameterInjectorTest
+  fun javaLibraryWithShadowProject() {
+    val project = javaLibraryWithShadowProjectSpec()
+    val result = project.run()
+
+    assertThat(result).outcome().succeeded()
+    assertThat(result).artifact("jar").exists()
+    assertThat(result).artifact("jar").isSigned()
+    assertThat(result).pom().exists()
+    assertThat(result).pom().isSigned()
+    assertThat(result).pom().matchesExpectedPom()
+    assertThat(result).module().exists()
+    assertThat(result).module().isSigned()
+    assertThat(result).sourcesJar().exists()
+    assertThat(result).sourcesJar().isSigned()
+    assertThat(result).sourcesJar().containsAllSourceFiles()
+    assertThat(result).javadocJar().exists()
+    assertThat(result).javadocJar().isSigned()
   }
 }
