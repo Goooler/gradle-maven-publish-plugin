@@ -6,7 +6,7 @@ minKgp = "2.2.0"
 
 gradle = "9.4.1"
 
-kotlin = "2.3.20"
+kotlin = "2.4.0"
 
 android-gradle = "9.1.0"
 
@@ -57,3 +57,4 @@ androidx-gradlePluginLints = "androidx.lint:lint-gradle:1.0.0"
 [plugins]
 buildconfig = "com.github.gmazzo.buildconfig:6.0.10"
 android-lint = { id = "com.android.lint", version.ref = "android-gradle" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
